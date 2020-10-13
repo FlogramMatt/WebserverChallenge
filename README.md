@@ -1,10 +1,12 @@
 # WebserverChallenge
 
+
+
 # Original Instructions
-# Rust Web Server
+** Rust Web Server **
 Using Warp or Actix, create a web server that interacts with an external web service.  Show off your skills and make this production-quality (this part is intentionally open-ended and not defined below).  To reiterate, try to go beyond what is being asked below.  For example, add a well-formed README, test all-the-things, and create a Config struct shared in a lazy static.External Web Service
 A third-party data feed from https://jsonplaceholder.typicode.com/ will be used for this assignment.Endpoints
-# 1. List Users
+** 1. List Users **
 Request: GET /api/v1/users
 Response: 200 OK
 
@@ -22,7 +24,7 @@ Response: 200 OK
   ...
 ]
 
-# 2. Create a User
+** 2. Create a User **
 Request #1 - Invalid Payload
 This request contains parameters that intentionally fail to satisfy validation requirements.
 The name will need to be at least 3 characters long and the email address should be valid.
