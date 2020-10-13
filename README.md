@@ -6,6 +6,8 @@
 **Rust Web Server**
 Using Warp or Actix, create a web server that interacts with an external web service.  Show off your skills and make this production-quality (this part is intentionally open-ended and not defined below).  To reiterate, try to go beyond what is being asked below.  For example, add a well-formed README, test all-the-things, and create a Config struct shared in a lazy static.External Web Service
 A third-party data feed from https://jsonplaceholder.typicode.com/ will be used for this assignment.Endpoints
+
+
 **1. List Users**
 Request: GET /api/v1/users
 Response: 200 OK
