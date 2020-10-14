@@ -3,15 +3,19 @@ use std::io::Read;
 
 use warp::{self, http::StatusCode};
 
-use reqwest;
+use lazy_static;
 
+use reqwest;
+use regex::Regex;
 use crate::user_json::User;
+
+lazy_static! {
+    static ref email_regex: Regex = Regex::new(r"^([a-z0-9_+]([a-z0-9_+.]*[a-z0-9_+])?)@([a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,6})").unwrap();
+    static ref user_vector_as_db: Vec<User> = Vec::with_capacity(20);
+}
 
 /// Returns a list of users as JSON
 ///
-/// # Arguments
-///
-/// * `db` - `Db` -> thread safe vector of Customer objects
 pub async fn list_users() -> Result<impl warp::Reply, warp::Rejection> {
     //get users from https://jsonplaceholder.typicode.com/users
 
@@ -30,7 +34,7 @@ pub async fn list_users() -> Result<impl warp::Reply, warp::Rejection> {
 /// is not found, it returns a NOT FOUND status code.
 /// # Arguments
 ///
-/// * `guid` - String -> the id of the user to retrieve
+/// * `user_id` - i32 -> the id of the user to retrieve
 pub async fn get_user(user_id: i32) -> Result<impl warp::Reply, warp::Rejection> {
     //get users from https://jsonplaceholder.typicode.com/users
 
@@ -76,24 +80,24 @@ pub async fn create_user(
 
     println!("{}",serde_json::to_string(&new_user).unwrap().as_str());
 
-    //validate user
+    //validate username is long enough
     if new_user.name.len() < 3 {
         errors.push("Name too short".to_string());
         failed_flag = true;
         //Ok(warp::reply::with_status("Name too short".to_string(), StatusCode::));
     }
 
+    //check if email_regex is long enough
+    if(!email_regex.is_match(new_user.email.as_str())){
+        errors.push("Invalid email address".to_string());
+        failed_flag = true;
+    }
+
     if(failed_flag){
         let errors_string:String = serde_json::to_string(&errors).unwrap();
         return Ok(warp::reply::with_status(errors_string, StatusCode::UNPROCESSABLE_ENTITY));
     }
-/*    for customer in customers.iter() {
-        if customer.guid == new_customer.guid {
-            return Ok(StatusCode::BAD_REQUEST);
-        }
-    }
 
-    customers.push(new_customer);*/
     new_user.id=11;
 
     let user_string:String = serde_json::to_string(&new_user).unwrap();
