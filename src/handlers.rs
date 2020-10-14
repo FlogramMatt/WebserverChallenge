@@ -12,6 +12,7 @@ use crate::user_json::User;
 lazy_static! {
     static ref email_regex: Regex = Regex::new(r"^([a-z0-9_+]([a-z0-9_+.]*[a-z0-9_+])?)@([a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,6})").unwrap();
     static ref user_vector_as_db: Vec<User> = Vec::with_capacity(20);
+    //static ref current_new_user_id: i32 = 11;
 }
 
 /// Returns a list of users as JSON
@@ -105,63 +106,8 @@ pub async fn create_user(
         return Ok(warp::reply::with_status(whole_errors_string, StatusCode::UNPROCESSABLE_ENTITY));
     }
 
-    new_user.id=11;
+    new_user.id= 11;
 
     let user_string:String = serde_json::to_string(&new_user).unwrap();
     Ok(warp::reply::with_status(user_string, StatusCode::OK))
 }
-
-//In a real application, I'd also implement the Update and Delete methods
-//And I'd go above and beyond but I don't think it really shows skills, just means spending more time doing more of the same
-
-/*/// Updates an existing customer
-///
-/// Overwrites an existing customer in the data store and returns
-/// an OK status code. If the customer is not found, a NOT FOUND status
-/// code is returned.
-///
-/// # Arguments
-///
-/// * `updated_customer` - `Customer` -> updated customer info
-/// * `db` - `Db` -> thread safe data store
-pub async fn update_customer(
-    guid: String,
-    updated_customer: Customer,
-    db: Db,
-) -> Result<impl warp::Reply, Infallible> {
-    let mut customers = db.lock().await;
-
-    for customer in customers.iter_mut() {
-        if customer.guid == guid {
-            *customer = updated_customer;
-            return Ok(StatusCode::OK);
-        }
-    }
-
-    Ok(StatusCode::NOT_FOUND)
-}
-
-/// Deletes a customer from the data store
-///
-/// If the customer exists in the data store, the customer is
-/// removed and a NO CONTENT status code is returned. If the customer
-/// does not exist, a NOT FOUND status code is returned.
-///
-/// # Arguments
-///
-/// * `guid` - String -> the id of the customer to delete
-/// * `db` - `Db` -> thread safe data store
-pub async fn delete_customer(guid: String) -> Result<impl warp::Reply, Infallible> {
-    let mut customers = db.lock().await;
-
-    let customer_count = customers.len();
-
-    customers.retain(|customer| customer.guid != guid);
-
-    let deleted = customers.len() != customer_count;
-    if deleted {
-        Ok(StatusCode::NO_CONTENT)
-    } else {
-        Ok(StatusCode::NOT_FOUND)
-    }
-}*/
