@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-/// Represents an address
+/// Represents an geographic location
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct Geo {
     /// latitude
@@ -29,7 +29,7 @@ pub struct Address {
     pub geo: Geo,
 }
 
-/// Represents an address
+/// Represents a company
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct Company {
     /// name of the company

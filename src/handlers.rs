@@ -20,8 +20,7 @@ lazy_static! {
 pub async fn list_users() -> Result<impl warp::Reply, warp::Rejection> {
     //get users from https://jsonplaceholder.typicode.com/users
 
-    //for a real project I would use nonblocking and handle this asynchronously
-    //also I wouldn't use unwrap which might panic and crash the entire server
+    //for a real project I wouldn't use unwrap which might panic and crash the entire server
     let res = reqwest::get("https://jsonplaceholder.typicode.com/users").await.unwrap();
 
     let body = res.text().await.unwrap();
@@ -51,18 +50,6 @@ pub async fn get_user(user_id: i32) -> Result<impl warp::Reply, warp::Rejection>
     }
 
     Ok(warp::reply::with_status(body, StatusCode::OK))
-    /*let users: Vec<User> = serde_json::from_str(body.as_str()).unwrap();
-
-    for user in users.iter()
-    {
-        if(user.id == user_id){
-            let user_string = serde_json::to_string(user).unwrap();
-
-            Ok(warp::reply::with_status(user_string, StatusCode::OK))
-        }
-    }*/
-
-    //Ok(Box::new(StatusCode::NOT_FOUND))
 }
 
 /// Creates a new user
