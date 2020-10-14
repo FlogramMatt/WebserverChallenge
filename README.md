@@ -1,6 +1,9 @@
 # WebserverChallenge
 
-# Valid calls
+# How to Run
+Open the main folder command line (navigate to it in windows explorer then type 'cmd' and press enter) and run using 'cargo run'. Once running using a third party REST API test tool like 'Restful' plugin for Firefox.
+
+# Valid REST API calls
 **GET /api/v1/users**\
 Will return a list of all valid users
 
