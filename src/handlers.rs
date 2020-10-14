@@ -41,7 +41,8 @@ pub async fn get_user(user_id: i32) -> Result<impl warp::Reply, warp::Rejection>
     let body = res.text().await.unwrap();
 
     if(body == "{}"){
-        return Ok(warp::reply::with_status("Not Found".to_string(), StatusCode::NOT_FOUND));
+        let return_string = "Not Found".to_string();
+        return Ok(warp::reply::with_status(return_string, StatusCode::NOT_FOUND));
     }
 
     Ok(warp::reply::with_status(body, StatusCode::OK))
@@ -59,31 +60,45 @@ pub async fn get_user(user_id: i32) -> Result<impl warp::Reply, warp::Rejection>
     //Ok(Box::new(StatusCode::NOT_FOUND))
 }
 
-/*/// Creates a new customer
+/// Creates a new user
 ///
-/// Adds a new customer object to the data store if the customer
-/// doesn't already exist
+/// Create a new user and add to our virtual database
 ///
 /// # Arguments
 ///
 /// * `new_customer` - `Customer` type
-/// * `db` - `Db` -> thread safe vector of Customer objects
-pub async fn create_customer(
-    new_customer: Customer,
-    db: Db,
+pub async fn create_user(
+    mut new_user: User,
 ) -> Result<impl warp::Reply, Infallible> {
-    let mut customers = db.lock().await;
 
-    for customer in customers.iter() {
+    let mut failed_flag: bool = false;
+    let mut errors: Vec<String>=Vec::with_capacity(2);
+
+    println!("{}",serde_json::to_string(&new_user).unwrap().as_str());
+
+    //validate user
+    if new_user.name.len() < 3 {
+        errors.push("Name too short".to_string());
+        failed_flag = true;
+        //Ok(warp::reply::with_status("Name too short".to_string(), StatusCode::));
+    }
+
+    if(failed_flag){
+        let errors_string:String = serde_json::to_string(&errors).unwrap();
+        return Ok(warp::reply::with_status(errors_string, StatusCode::UNPROCESSABLE_ENTITY));
+    }
+/*    for customer in customers.iter() {
         if customer.guid == new_customer.guid {
             return Ok(StatusCode::BAD_REQUEST);
         }
     }
 
-    customers.push(new_customer);
+    customers.push(new_customer);*/
+    new_user.id=11;
 
-    Ok(StatusCode::CREATED)
-}*/
+    let user_string:String = serde_json::to_string(&new_user).unwrap();
+    Ok(warp::reply::with_status(user_string, StatusCode::OK))
+}
 
 /*/// Updates an existing customer
 ///

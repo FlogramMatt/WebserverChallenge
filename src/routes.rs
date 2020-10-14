@@ -10,7 +10,7 @@ pub fn user_routes(
     get_user()
         //.or(update_customer(db.clone()))
         //.or(delete_customer(db.clone()))
-        //.or(create_customer(db.clone()))
+        .or(create_user())
         .or(users_list())
 }
 
@@ -32,9 +32,18 @@ fn get_user(
         .and_then(handlers::get_user)
 }
 
-/*fn json_body() -> impl Filter<Extract = (User,), Error = warp::Rejection> + Clone {
-    warp::body::content_length_limit(1024 * 16).and(warp::body::json())
-}*/
+/// POST /users
+fn create_user(
+) -> impl Filter<Extract = impl warp::Reply, Error = warp::Rejection> + Clone {
+    warp::path!("api"/"v1"/"users")
+        .and(warp::post())
+        .and(json_body())
+        .and_then(handlers::create_user)
+}
+
+fn json_body() -> impl Filter<Extract = (User,), Error = warp::Rejection> + Clone {
+    warp::body::content_length_limit(2048 * 16).and(warp::body::json())
+}
 
 /*/// POST /customers
 fn create_customer(

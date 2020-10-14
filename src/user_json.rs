@@ -46,6 +46,7 @@ pub struct Company {
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct User {
     /// A unique identifier for a user record
+    #[serde(default)]
     pub id: i32,
 
     /// Name
@@ -55,14 +56,18 @@ pub struct User {
     pub email: String,
 
     /// Physical address
+    #[serde(default)]
     pub address: Address,
 
     ///user's phone number
+    #[serde(default)]
     pub phone: String,
 
     ///User's website
+    #[serde(default)]
     pub website: String,
 
     ///Company info
+    #[serde(default)]
     pub company: Company,
 }
