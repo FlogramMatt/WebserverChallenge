@@ -7,6 +7,10 @@ use warp::Filter;
 #[tokio::main]
 async fn main(){
     let user_routes = routes::user_routes();
+
+    warp::serve(user_routes)
+        .run(([127, 0, 0, 1], 3000))
+        .await;
 }
 
 /*async fn main() {

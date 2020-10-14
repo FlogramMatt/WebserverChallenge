@@ -1,6 +1,9 @@
 use std::convert::Infallible;
+use std::io::Read;
 
 use warp::{self, http::StatusCode};
+
+use reqwest;
 
 use crate::user_json::User;
 
@@ -9,13 +12,43 @@ use crate::user_json::User;
 /// # Arguments
 ///
 /// * `db` - `Db` -> thread safe vector of Customer objects
-pub async fn list_users() -> Result<impl warp::Reply, Infallible> {
+pub async fn list_users() -> Result<impl warp::Reply, warp::Rejection> {
     //get users from https://jsonplaceholder.typicode.com/users
+
+    //for a real project I would use nonblocking and handle this asynchronously
+    let mut res = reqwest::blocking::get("https://jsonplaceholder.typicode.com/users").unwrap();
+    let mut body = String::new();
+
+    res.read_to_string(&mut body);
+
+    //temporarily printing to string
+    println!("Body:\n{}",body);
 
     //let users: Vec<User> = Users.clone();
     //Ok(warp::reply::json(&users))
     let our_ids = vec![1, 3, 7, 13]; //random vector being returned for now
     Ok(warp::reply::json(&our_ids))
+}
+
+/// Gets a single user from the data store
+///
+/// Returns a JSON object of an existing customer. If the user
+/// is not found, it returns a NOT FOUND status code.
+/// # Arguments
+///
+/// * `guid` - String -> the id of the user to retrieve
+pub async fn get_user(user_id: i32) -> Result<Box<dyn warp::Reply>, warp::Rejection> {
+    //get users from https://jsonplaceholder.typicode.com/users
+
+    /*    for user in users.iter() {
+            if customer.guid == guid {
+                return Ok(Box::new(warp::reply::json(&user)));
+            }
+        }*/
+
+    let mut res = reqwest::blocking::get("https://jsonplaceholder.typicode.com/users").unwrap();
+
+    Ok(Box::new(StatusCode::NOT_FOUND))
 }
 
 /*/// Creates a new customer
@@ -43,25 +76,6 @@ pub async fn create_customer(
 
     Ok(StatusCode::CREATED)
 }*/
-
-/// Gets a single user from the data store
-///
-/// Returns a JSON object of an existing customer. If the user
-/// is not found, it returns a NOT FOUND status code.
-/// # Arguments
-///
-/// * `guid` - String -> the id of the user to retrieve
-pub async fn get_user(user_id: i32) -> Result<Box<dyn warp::Reply>, Infallible> {
-    //get users from https://jsonplaceholder.typicode.com/users
-
-/*    for user in users.iter() {
-        if customer.guid == guid {
-            return Ok(Box::new(warp::reply::json(&user)));
-        }
-    }*/
-
-    Ok(Box::new(StatusCode::NOT_FOUND))
-}
 
 /*/// Updates an existing customer
 ///
