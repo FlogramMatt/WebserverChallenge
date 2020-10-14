@@ -78,7 +78,8 @@ pub async fn create_user(
     let mut failed_flag: bool = false;
     let mut errors: Vec<String>=Vec::with_capacity(2);
 
-    println!("{}",serde_json::to_string(&new_user).unwrap().as_str());
+    //for debugging purposes
+    println!(" new user: {}",serde_json::to_string(&new_user).unwrap().as_str());
 
     //validate username is long enough
     if new_user.name.len() < 3 {
@@ -94,8 +95,14 @@ pub async fn create_user(
     }
 
     if(failed_flag){
-        let errors_string:String = serde_json::to_string(&errors).unwrap();
-        return Ok(warp::reply::with_status(errors_string, StatusCode::UNPROCESSABLE_ENTITY));
+        //could spend the time to figure out how to create a serde struct with an array of strings but easier to just build my own json
+        //using what serde returns from turning the array into json
+        let mut whole_errors_string:String = "{ \"errors\": ".to_string();
+        let mut errors_string:String = serde_json::to_string(&errors).unwrap();
+        whole_errors_string.push_str(errors_string.as_str());
+        whole_errors_string.push_str("}");
+
+        return Ok(warp::reply::with_status(whole_errors_string, StatusCode::UNPROCESSABLE_ENTITY));
     }
 
     new_user.id=11;
@@ -103,6 +110,9 @@ pub async fn create_user(
     let user_string:String = serde_json::to_string(&new_user).unwrap();
     Ok(warp::reply::with_status(user_string, StatusCode::OK))
 }
+
+//In a real application, I'd also implement the Update and Delete methods
+//And I'd go above and beyond but I don't think it really shows skills, just means spending more time doing more of the same
 
 /*/// Updates an existing customer
 ///
