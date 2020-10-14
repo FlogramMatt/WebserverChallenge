@@ -3,7 +3,7 @@
 # How to Run
 Open the main folder command line (navigate to it in windows explorer then type 'cmd' and press enter) and run using 'cargo run'. Once running using a third party REST API test tool like 'Restful' plugin for Firefox.
 
-Webserver runs on localhost on port 3000:
+Webserver runs on localhost on port 3000, REST API calls should use this url:
 http://localhost:3000/api/v1/users/
 
 # Valid REST API calls
