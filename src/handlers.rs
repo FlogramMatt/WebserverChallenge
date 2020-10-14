@@ -16,10 +16,9 @@ pub async fn list_users() -> Result<impl warp::Reply, warp::Rejection> {
     //get users from https://jsonplaceholder.typicode.com/users
 
     //for a real project I would use nonblocking and handle this asynchronously
-    let mut res = reqwest::blocking::get("https://jsonplaceholder.typicode.com/users").unwrap();
-    let mut body = String::new();
+    let mut res = reqwest::get("https://jsonplaceholder.typicode.com/users").await.unwrap();
 
-    res.read_to_string(&mut body);
+    let body = res.text().await.unwrap();
 
     //temporarily printing to string
     println!("Body:\n{}",body);
