@@ -1,13 +1,13 @@
 # WebserverChallenge
 
 # Valid calls
-**GET /api/v1/users**
+**GET /api/v1/users**\
 Will return a list of all valid users
 
-**GET /api/v1/users/<id>**
+**GET /api/v1/users/<id>**\
 Will check if a user with a specific integer id exists, if so, return him with StatusCode::OK, otherwise StatusCode::NOT_FOUND
 
-**POST /api/v1/users/**
+**POST /api/v1/users/**\
 Will throw error if header not included: "Content-Type: application/json"
 Body must include "name" and "email address"
 name must be at least 3 characters in length
