@@ -12,18 +12,18 @@ A third-party data feed from https://jsonplaceholder.typicode.com/ will be used 
 Request: GET /api/v1/users
 Response: 200 OK
 
-[
-  {
-    "id": 1,
-    "name": "Leanne Graham",
-    "email": "Sincere@april.biz",
-  },
-  {
-    "id": 2,
-    "name": "Ervin Howell",
-    "email": "Shanna@melissa.tv",
-  },
-  ...
+[\
+  {\
+    "id": 1,\
+    "name": "Leanne Graham",\
+    "email": "Sincere@april.biz",\
+  },\
+  {\
+    "id": 2,\
+    "name": "Ervin Howell",\
+    "email": "Shanna@melissa.tv",\
+  },\
+  ...\
 ]
 
 **2. Create a User**
